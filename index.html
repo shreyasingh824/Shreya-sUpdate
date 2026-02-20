@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shreya Singh – Work Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e17;
+    --cream: #faf9f6;
+    --accent: #e76f51;
+    --accent2: #2a9d8f;
+    --accent3: #e9c46a;
+    --muted: #6b7280;
+    --card-bg: #ffffff;
+    --border: #e5e3de;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+  .hero { background: var(--ink); color: var(--cream); padding: 72px 48px 56px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 360px; height: 360px; border-radius: 50%; background: var(--accent); opacity: 0.12; }
+  .hero::after { content: ''; position: absolute; bottom: -60px; left: 20%; width: 220px; height: 220px; border-radius: 50%; background: var(--accent2); opacity: 0.15; }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 16px; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 20px; }
+  .hero h1 em { font-style: italic; color: var(--accent3); }
+  .hero-sub { font-size: 1.05rem; color: #c9c5bc; max-width: 560px; line-height: 1.7; margin-bottom: 36px; }
+  .stats-row { display: flex; gap: 40px; flex-wrap: wrap; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--accent3); display: block; line-height: 1; }
+  .stat-label { font-size: 0.78rem; color: #9ca3af; letter-spacing: 0.5px; margin-top: 4px; }
+
+  .nav-wrap { background: var(--card-bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
+  .nav-tabs { display: flex; max-width: 960px; margin: 0 auto; padding: 0 48px; overflow-x: auto; }
+  .tab-btn { padding: 18px 24px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; color: var(--muted); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  .content { max-width: 960px; margin: 0 auto; padding: 48px 48px 80px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 48px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: transform 0.2s, box-shadow 0.2s; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+  .card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+  .card-icon.orange { background: #fff1ec; } .card-icon.teal { background: #e8f7f5; } .card-icon.yellow { background: #fdf8e8; } .card-icon.purple { background: #f0eeff; }
+  .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+  .card p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
+
+  .section-header { margin-bottom: 32px; }
+  .section-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 8px; }
+  .section-header p { color: var(--muted); font-size: 0.9rem; }
+
+  .ticket-group { margin-bottom: 40px; }
+  .ticket-group-title { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .ticket-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .ticket-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 20px; cursor: pointer; transition: all 0.2s; user-select: none;
+  }
+  .ticket-item:hover { border-color: #f4a98f; box-shadow: 0 3px 14px rgba(231,111,81,0.1); }
+  .ticket-item.expanded { border-color: var(--accent); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+  .ticket-badge { font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+  .badge-bug { background: #fee2e2; color: #dc2626; }
+  .badge-feature { background: #d1fae5; color: #059669; }
+  .badge-refactor { background: #dbeafe; color: #2563eb; }
+  .badge-security { background: #ede9fe; color: #7c3aed; }
+
+  .ticket-id { font-weight: 700; font-size: 0.9rem; color: var(--ink); min-width: 100px; }
+  .ticket-desc { font-size: 0.87rem; color: var(--muted); flex: 1; }
+  .ticket-status { font-size: 0.72rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+  .status-done { background: #d1fae5; color: #065f46; }
+  .status-review { background: #fef3c7; color: #92400e; }
+  .status-closed { background: #f3f4f6; color: #6b7280; }
+  .ticket-chevron { font-size: 0.75rem; color: var(--muted); transition: transform 0.25s; flex-shrink: 0; }
+  .ticket-item.expanded .ticket-chevron { transform: rotate(180deg); }
+
+  .summary-panel {
+    display: none;
+    background: #fff8f6; border: 1px solid var(--accent); border-top: none;
+    border-radius: 0 0 10px 10px; padding: 20px 24px;
+    animation: slideDown 0.2s ease;
+  }
+  .summary-panel.open { display: block; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .summary-label { font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+  .summary-value { font-size: 0.84rem; color: var(--ink); line-height: 1.5; }
+  .summary-value code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font-size: 0.8rem; }
+
+  .view-detail-btn {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 16px;
+    background: var(--accent); color: white; font-size: 0.8rem; font-weight: 600;
+    padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.2s;
+  }
+  .view-detail-btn:hover { background: #d4623e; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,14,23,0.65); z-index: 1000;
+    backdrop-filter: blur(4px); align-items: flex-start;
+    justify-content: center; padding: 40px 16px; overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--card-bg); border-radius: 16px; width: 100%; max-width: 680px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.35); animation: slideUp 0.25s ease; margin: auto;
+    overflow: hidden;
+  }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+  .modal-header { background: var(--ink); color: white; padding: 28px 32px; position: relative; }
+  .modal-header-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .modal-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.45rem; line-height: 1.3; }
+  .modal-header p { color: #9ca3af; font-size: 0.86rem; margin-top: 8px; line-height: 1.5; }
+  .modal-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.12); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .modal-close:hover { background: rgba(255,255,255,0.22); }
+
+  .modal-body { padding: 28px 32px; }
+  .modal-section { margin-bottom: 24px; }
+  .modal-section-title { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .modal-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .modal-section p { font-size: 0.9rem; color: var(--ink); line-height: 1.75; }
+  .modal-section p code { background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 0.82rem; }
+  .modal-section ul { padding-left: 0; list-style: none; }
+  .modal-section ul li { font-size: 0.88rem; color: #374151; padding: 7px 0 7px 22px; position: relative; line-height: 1.6; border-bottom: 1px solid #f9f9f9; }
+  .modal-section ul li:last-child { border-bottom: none; }
+  .modal-section ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .modal-section ul li code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font-size: 0.8rem; }
+
+  .code-block { background: #1e1e2e; color: #cdd6f4; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.82rem; padding: 16px; border-radius: 8px; overflow-x: auto; line-height: 1.7; margin-top: 10px; }
+  .kw { color: #cba6f7; } .fn { color: #89b4fa; } .str { color: #a6e3a1; } .cm { color: #6c7086; }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .tag { font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; background: #f3f4f6; color: #374151; font-weight: 500; }
+  .modal-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; color: var(--accent); font-weight: 600; text-decoration: none; padding: 5px 0; display: block; }
+  .modal-link:hover { text-decoration: underline; }
+
+  /* MVP2 */
+  .project-hero { background: linear-gradient(135deg, var(--ink) 0%, #1e3a5f 100%); border-radius: 16px; padding: 36px; color: white; margin-bottom: 32px; position: relative; overflow: hidden; }
+  .project-hero::before { content: '⚡'; position: absolute; right: 36px; top: 50%; transform: translateY(-50%); font-size: 80px; opacity: 0.08; }
+  .project-hero h3 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 10px; }
+  .project-hero p { color: #9cb3cc; font-size: 0.9rem; line-height: 1.7; max-width: 520px; }
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .tech-tag { background: rgba(255,255,255,0.1); color: #e2f0ff; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); }
+
+  /* MVP2 DOC LINK BANNER */
+  .doc-link-banner {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(231,111,81,0.3);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+  }
+  .doc-link-banner-left { display: flex; align-items: center; gap: 16px; }
+  .doc-link-banner-icon {
+    width: 48px; height: 48px; background: rgba(231,111,81,0.15); border: 1px solid rgba(231,111,81,0.3);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+  }
+  .doc-link-banner-text h4 { color: #fff; font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+  .doc-link-banner-text p { color: #7a8fa6; font-size: 0.8rem; line-height: 1.5; }
+  .doc-link-banner-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .doc-link-banner-pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #9cb3cc; font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; }
+  .doc-link-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: white; text-decoration: none;
+    padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 0.88rem;
+    white-space: nowrap; transition: background 0.2s, transform 0.15s;
+    flex-shrink: 0;
+  }
+  .doc-link-btn:hover { background: #d4623e; transform: translateY(-1px); }
+
+  .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .arch-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .arch-card .arch-icon { font-size: 1.4rem; margin-bottom: 10px; }
+  .arch-card h4 { font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; }
+  .arch-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .skill-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+  .skill-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
+  .skill-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .skill-name { font-size: 0.82rem; color: var(--muted); }
+  .skill-bar-wrap { width: 100px; height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
+  .skill-bar { height: 100%; border-radius: 3px; }
+
+  .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .syllabus-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+  .syllabus-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 14px; }
+  .syl-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 0.83rem; }
+  .syl-check { color: var(--accent2); font-weight: 700; flex-shrink: 0; }
+  .syl-text { color: var(--muted); line-height: 1.5; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 24px 40px; }
+    .content { padding: 32px 24px 60px; }
+    .nav-tabs { padding: 0 16px; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .modal-body { padding: 20px; }
+    .doc-link-banner { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Run Assessment · 2026</div>
+    <h1>Shreya Singh<br><em>Work Showcase</em></h1>
+    <p class="hero-sub">A comprehensive view of my contributions across tickets, side projects, and technical skills — built to support my Assessment.</p>
+    <div class="stats-row">
+      <div class="stat"><span class="stat-num">10</span><span class="stat-label">Tickets Worked</span></div>
+      <div class="stat"><span class="stat-num">1</span><span class="stat-label">Side Project (MVP2)</span></div>
+      <div class="stat"><span class="stat-num">4</span><span class="stat-label">Skill Areas Covered</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">Squads Supported</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('overview',this)"> Overview</button>
+    <button class="tab-btn" onclick="showTab('tickets',this)"> Tickets</button>
+    <button class="tab-btn" onclick="showTab('mvp2',this)"> MVP2 Project</button>
+    <button class="tab-btn" onclick="showTab('skills',this)"> Skills</button>
+    <button class="tab-btn" onclick="showTab('syllabus',this)"> Syllabus Coverage</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- OVERVIEW -->
+  <div id="overview" class="section active">
+
+    <div style="background:var(--ink);border-radius:16px;padding:36px 40px;margin-bottom:36px;color:white;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:var(--accent);opacity:0.08;"></div>
+      <div style="position:absolute;bottom:-30px;left:30%;width:140px;height:140px;border-radius:50%;background:var(--accent2);opacity:0.1;"></div>
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px;">About My Work</div>
+        <p style="font-size:1.05rem;line-height:1.85;color:#d1cfc9;max-width:700px;">
+          I work on the <strong style="color:white;">Tesco Grocery &amp; Clubcard Android app</strong> — a product used by millions of customers across the UK, ROI, and internationally. My team owns the <strong style="color:white;">Product Detail Page (PDP)</strong>, where I've been responsible for delivering new features, fixing production bugs, and improving the quality and architecture of the codebase.
+        </p>
+        <p style="font-size:0.95rem;line-height:1.8;color:#9ca3af;max-width:700px;margin-top:14px;">
+          Every ticket I work on touches real customers. A crash fix means fewer force-closes in production. A banner bug fix means promotions actually reach Instore shoppers. A refactor means the next engineer can move faster. That's the standard I hold myself to.
+        </p>
+      </div>
+    </div>
+
+    <div class="section-header"><h2>How We Build at Tesco</h2><p>The architectural principles I work within — and demonstrate fluency in — every day.</p></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px;">
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:28px;">
+        <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:16px;"> Clean Architecture</div>
+        <svg viewBox="0 0 320 200" style="width:100%;height:auto;margin-bottom:16px;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="300" height="180" rx="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+          <rect x="36" y="34" width="248" height="132" rx="11" fill="#d1fae5" stroke="#34d399" stroke-width="1.5"/>
+          <rect x="62" y="58" width="196" height="84" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="1.5"/>
+          <rect x="88" y="80" width="144" height="44" rx="6" fill="#ede9fe" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="160" y="107" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Domain / Entities</text>
+          <text x="80" y="72" font-size="9" fill="#1d4ed8">Use Cases</text>
+          <text x="42" y="46" font-size="9" fill="#065f46">Interface Adapters</text>
+          <text x="14" y="22" font-size="9" fill="#92400e">Frameworks &amp; Drivers (Android)</text>
+          <text x="270" y="107" font-size="9" fill="#6b7280">↓ deps</text>
+          <text x="270" y="118" font-size="9" fill="#6b7280">inward</text>
+        </svg>
+        <p style="font-size:0.83rem;color:var(--muted);line-height:1.65;">The Tesco app follows Clean Architecture — UI, Domain, and Data layers with strict inward-pointing dependencies. The Domain layer has <strong>zero knowledge</strong> of Android. This is the pattern I applied in my MVP2 side project and reinforce with every refactor I do.</p>
+      </div>
+
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:28px;">
+        <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:16px;"> MVVM Pattern</div>
+        <svg viewBox="0 0 320 200" style="width:100%;height:auto;margin-bottom:16px;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="100" y="20" width="120" height="44" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+          <text x="160" y="47" text-anchor="middle" font-size="12" font-weight="700" fill="#9d174d">ViewModel</text>
+          <rect x="20" y="130" width="110" height="44" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="1.5"/>
+          <text x="75" y="157" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af">Model</text>
+          <rect x="190" y="130" width="110" height="44" rx="8" fill="#d1fae5" stroke="#34d399" stroke-width="1.5"/>
+          <text x="245" y="157" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">View(s)</text>
+          <line x1="100" y1="64" x2="75" y2="130" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="130" y1="64" x2="245" y2="130" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="130" y1="130" x2="120" y2="68" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr2)"/>
+          <text x="44" y="102" font-size="8" fill="#64748b">updates</text>
+          <text x="185" y="100" font-size="8" fill="#64748b">observes</text>
+          <text x="108" y="100" font-size="8" fill="#ec4899">UI state</text>
+          <defs>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker>
+            <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#ec4899"/></marker>
+          </defs>
+        </svg>
+        <p style="font-size:0.83rem;color:var(--muted);line-height:1.65;">The Tesco app uses <strong>MVVM</strong> in the presentation layer. The ViewModel holds and exposes UI state; Views observe and react. This keeps UI logic testable and separated from business logic. My bug fixes for ONA-52372 (Pager crash) and ONA-52292 (UI clipping) were both diagnosed through this layered lens.</p>
+      </div>
+    </div>
+
+    <div style="background:#f8f9ff;border:1px solid #e0e4ff;border-radius:14px;padding:28px;margin-bottom:36px;">
+      <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:#6366f1;font-weight:700;margin-bottom:18px;">🔗 How It All Connects in the Tesco App</div>
+      <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;">
+        <div style="text-align:center;padding:12px 16px;"><div style="background:#ede9fe;border-radius:10px;padding:10px 16px;font-size:0.82rem;font-weight:700;color:#6d28d9;white-space:nowrap;">Mango API</div><div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Backend Data</div></div>
+        <div style="color:#94a3b8;font-size:1.2rem;padding:0 4px;">→</div>
+        <div style="text-align:center;padding:12px 16px;"><div style="background:#dbeafe;border-radius:10px;padding:10px 16px;font-size:0.82rem;font-weight:700;color:#1e40af;white-space:nowrap;">Repository</div><div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Data Layer</div></div>
+        <div style="color:#94a3b8;font-size:1.2rem;padding:0 4px;">→</div>
+        <div style="text-align:center;padding:12px 16px;"><div style="background:#d1fae5;border-radius:10px;padding:10px 16px;font-size:0.82rem;font-weight:700;color:#065f46;white-space:nowrap;">Use Case</div><div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Domain Layer</div></div>
+        <div style="color:#94a3b8;font-size:1.2rem;padding:0 4px;">→</div>
+        <div style="text-align:center;padding:12px 16px;"><div style="background:#fce7f3;border-radius:10px;padding:10px 16px;font-size:0.82rem;font-weight:700;color:#9d174d;white-space:nowrap;">ViewModel</div><div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Presentation</div></div>
+        <div style="color:#94a3b8;font-size:1.2rem;padding:0 4px;">→</div>
+        <div style="text-align:center;padding:12px 16px;"><div style="background:#fef3c7;border-radius:10px;padding:10px 16px;font-size:0.82rem;font-weight:700;color:#92400e;white-space:nowrap;">Compose UI</div><div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">View Layer</div></div>
+      </div>
+      <p style="font-size:0.84rem;color:var(--muted);margin-top:18px;line-height:1.7;text-align:center;">Understanding this flow is what lets me debug effectively — for example, the PDP banner bug (ONA-52294) needed Charles Proxy to catch the wrong <code style="background:#e5e7eb;padding:2px 6px;border-radius:4px;">isForSale</code> value coming from Mango before it even reached the Repository layer.</p>
+    </div>
+
+    <div class="section-header"><h2>This Cycle — What I Delivered</h2><p>Concrete contributions across bugs, refactoring, features, and cross-squad work.</p></div>
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon orange"></div><h3>5 Bug Fixes</h3><p>WebView infinite loaders, IndexOutOfBoundsException crash, UI text clipping, Instore banner invisibility, ROI duplicate warnings — all investigated root-cause-first.</p></div>
+      <div class="card"><div class="card-icon teal"></div><h3>Security Squad</h3><p>Contributed to 3 cross-squad security tickets (MEDIA-5010, ONA-45583, ONA-53986) — showing I can work beyond my primary squad on critical areas.</p></div>
+      <div class="card"><div class="card-icon yellow"></div><h3>Feature + Refactor</h3><p>Delivered Product Dimensions feature end-to-end (ONA-53133) and refactored Product Warning display to use DDS TescoBulletListTextView (ONA-52742).</p></div>
+      <div class="card"><div class="card-icon purple"></div><h3>MVP2 Side Project</h3><p>Built a complete Android + Node.js + MongoDB app from scratch applying the same MVVM + Clean Architecture patterns used in the Tesco production codebase.</p></div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#0f0e17 0%,#1e293b 100%);border-radius:14px;padding:32px 36px;margin-top:8px;">
+      <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:20px;"> Why This Matters for Assessment</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+        <div><div style="font-size:1.4rem;margin-bottom:8px;"></div><div style="font-size:0.88rem;font-weight:600;color:white;margin-bottom:6px;">Architecture Fluency</div><div style="font-size:0.8rem;color:#9ca3af;line-height:1.6;">I don't just write code — I understand <em>why</em> the layers exist. My fixes respect the architecture; my refactors improve it.</div></div>
+        <div><div style="font-size:1.4rem;margin-bottom:8px;"></div><div style="font-size:0.88rem;font-weight:600;color:white;margin-bottom:6px;">Deep Debugging</div><div style="font-size:0.8rem;color:#9ca3af;line-height:1.6;">Charles Proxy, XAPI preview, PPE testing, crash logs — I use the right tool to find the real root cause, not surface symptoms.</div></div>
+        <div><div style="font-size:1.4rem;margin-bottom:8px;"></div><div style="font-size:0.88rem;font-weight:600;color:white;margin-bottom:6px;">Cross-Team Impact</div><div style="font-size:0.8rem;color:#9ca3af;line-height:1.6;">Mango team, DDS team, Security Squad — I collaborate beyond my squad to get the right fix, not just a quick workaround.</div></div>
+        <div><div style="font-size:1.4rem;margin-bottom:8px;"></div><div style="font-size:0.88rem;font-weight:600;color:white;margin-bottom:6px;">Self-Driven Growth</div><div style="font-size:0.8rem;color:#9ca3af;line-height:1.6;">MVP2 wasn't assigned — I built it to prove I can own a full system. That initiative is what distinguishes SDE2 from SDE1.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKETS -->
+  <div id="tickets" class="section">
+    <div class="section-header"><h2>Tickets Worked On</h2><p>Tap a ticket for a quick summary · Click <strong>View Full Detail →</strong> for the deep dive.</p></div>
+
+    <div class="ticket-group">
+      <div class="ticket-group-title">🐛 Bug Tickets — Tasks Update Squad</div>
+      <div class="ticket-list">
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s1',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52371</span><span class="ticket-desc">WebView loader stuck infinitely on API failure</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s1">
+            <div class="summary-grid">
+              <div><div class="summary-label">Issue</div><div class="summary-value">Loader spins forever when <code>GetProductImages</code> returns 400 / 500 / no internet</div></div>
+              <div><div class="summary-label">Fix</div><div class="summary-value">PR raised & merged — loader now handles all error states gracefully</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">Error state handling, WebView, API responses</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">✅ Done (Closed)</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m1')">View Full Detail →</button>
+          </div>
+        </div>
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s2',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52294</span><span class="ticket-desc">PDP Instore promotional banner not displaying (UK)</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s2">
+            <div class="summary-grid">
+              <div><div class="summary-label">Issue</div><div class="summary-value">Promo banner hidden in Instore PDP for UK users</div></div>
+              <div><div class="summary-label">Root Cause</div><div class="summary-value"><code>isForSale = false</code> for instore context → banner hidden by logic</div></div>
+              <div><div class="summary-label">My Action</div><div class="summary-value">Diagnosed via Charles Proxy, coordinated fix with Mango team</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">API debugging, Charles Proxy, cross-team coordination</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m2')">View Full Detail →</button>
+          </div>
+        </div>
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s3',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52292</span><span class="ticket-desc">Nutritional info headers clipped for long text</span><span class="ticket-status status-closed">Closed</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s3">
+            <div class="summary-grid">
+              <div><div class="summary-label">Issue</div><div class="summary-value">Long nutritional header text gets truncated in UI</div></div>
+              <div><div class="summary-label">Action</div><div class="summary-value">Root cause identified, escalated to DDS who raised PR #724</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">UI debugging, DDS collaboration, design system awareness</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">Closed — resolved via DDS PR #724</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m3')">View Full Detail →</button>
+          </div>
+        </div>
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s4',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52372</span><span class="ticket-desc">App crash — product image not available (IndexOutOfBoundsException)</span><span class="ticket-status status-review">In Review</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s4">
+            <div class="summary-grid">
+              <div><div class="summary-label">Root Cause</div><div class="summary-value"><code>selectedImageIndex = -1</code> passed to HorizontalPager → crash</div></div>
+              <div><div class="summary-label">Fix</div><div class="summary-value"><code>coerceIn()</code> clamps index to valid range — no more invalid state</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">Crash analysis, defensive coding, Jetpack Compose Pager</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">🔄 In Review</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m4')">View Full Detail →</button>
+          </div>
+        </div>
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s5',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52126</span><span class="ticket-desc">ROI — Safety & Product Warning duplicate display</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s5">
+            <div class="summary-grid">
+              <div><div class="summary-label">Issue</div><div class="summary-value">Both 'Safety Info' and 'Product Warning' shown when values are the same (ROI)</div></div>
+              <div><div class="summary-label">Finding</div><div class="summary-value">Verified in PPE — not reproducible; deduplication working correctly</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">PPE testing, regional variant handling, QA verification</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">✅ Done</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m5')">View Full Detail →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticket-group">
+      <div class="ticket-group-title">🔄 Refactor Tickets — Tasks Update Squad</div>
+      <div class="ticket-list">
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s6',this)"><span class="ticket-badge badge-refactor">Refactor</span><span class="ticket-id">ONA-52742</span><span class="ticket-desc">Product Warning — multi-value bullet list not rendering correctly</span><span class="ticket-status status-review">In Review</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s6">
+            <div class="summary-grid">
+              <div><div class="summary-label">Issue</div><div class="summary-value">Only one element shown for multi-value Safety/Product Warning arrays</div></div>
+              <div><div class="summary-label">Root Cause</div><div class="summary-value">ProductWarningMapper used newlines only; no bullet formatting unlike ProductHazardInfoMapper</div></div>
+              <div><div class="summary-label">Fix</div><div class="summary-value">PR raised using DDS TescoBulletListTextView for proper indented bullets</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">DDS components, data mapping, XAPI debugging</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m6')">View Full Detail →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticket-group">
+      <div class="ticket-group-title">✨ Feature Tickets — Tasks Update Squad</div>
+      <div class="ticket-list">
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s7',this)"><span class="ticket-badge badge-feature">Feature</span><span class="ticket-id">ONA-53133</span><span class="ticket-desc">Product Dimensions — new feature delivery</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s7">
+            <div class="summary-grid">
+              <div><div class="summary-label">Feature</div><div class="summary-value">Displaying product dimensions on PDP per new Mango contract</div></div>
+              <div><div class="summary-label">My Action</div><div class="summary-value">Mango contract updated, feature implemented end-to-end, Confluence documented</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">Feature ownership, API contracts, Confluence docs</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">✅ Done</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m7')">View Full Detail →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticket-group">
+      <div class="ticket-group-title">🔒 Security Squad — Cross-Squad Contribution</div>
+      <div class="ticket-list">
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s8',this)"><span class="ticket-badge badge-security">Security</span><span class="ticket-id">MEDIA-5010</span><span class="ticket-desc">Security Squad — media-related contribution</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s8">
+            <div class="summary-grid">
+              <div><div class="summary-label">Squad</div><div class="summary-value">Security Squad (cross-squad contribution)</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">Security mindset, cross-team working, media handling</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m8')">View Full Detail →</button>
+          </div>
+        </div>
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s9',this)"><span class="ticket-badge badge-security">Security</span><span class="ticket-id">ONA-45583</span><span class="ticket-desc">Security Squad — authentication contribution</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s9">
+            <div class="summary-grid">
+              <div><div class="summary-label">Squad</div><div class="summary-value">Security Squad (cross-squad contribution)</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">Authentication flows, JWT handling, security practices</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m9')">View Full Detail →</button>
+          </div>
+        </div>
+        <div>
+          <div class="ticket-item" onclick="toggleSummary('s10',this)"><span class="ticket-badge badge-security">Security</span><span class="ticket-id">ONA-53986</span><span class="ticket-desc">Security Squad — session management contribution</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="summary-panel" id="s10">
+            <div class="summary-grid">
+              <div><div class="summary-label">Squad</div><div class="summary-value">Security Squad (cross-squad contribution)</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">Session management, token lifecycle, secure logout</div></div>
+            </div>
+            <button class="view-detail-btn" onclick="openModal('m10')">View Full Detail →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MVP2 TAB ═══ -->
+  <div id="mvp2" class="section">
+    <div class="section-header"><h2>MVP2 — Product Management App</h2><p>A full-stack side project built to demonstrate real-world architecture and engineering skills.</p></div>
+
+    <!-- PROJECT HERO -->
+    <div class="project-hero">
+      <h3>Why I Built This</h3>
+      <p>This app implements the same foundational patterns used in production at scale — secure authentication, offline-first design, and clean architecture — to show I can independently design and deliver a complete system.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Android (Jetpack Compose)</span>
+        <span class="tech-tag">Kotlin</span>
+        <span class="tech-tag">Node.js</span>
+        <span class="tech-tag">MongoDB</span>
+        <span class="tech-tag">JWT Auth</span>
+        <span class="tech-tag">bcrypt</span>
+        <span class="tech-tag">MVVM</span>
+        <span class="tech-tag">Clean Architecture</span>
+        <span class="tech-tag">New Relic</span>
+        <span class="tech-tag">Room Database</span>
+        <span class="tech-tag">Hilt DI</span>
+        <span class="tech-tag">Retrofit 2</span>
+      </div>
+    </div>
+
+    <!-- ✅ DOCUMENTATION LINK BANNER — NEW -->
+    <div class="doc-link-banner">
+      <div class="doc-link-banner-left">
+        <div class="doc-link-banner-icon">📄</div>
+        <div class="doc-link-banner-text">
+          <h4>Full Technical Documentation</h4>
+          <p>Deep-dive into the system design, architecture diagrams, UML class diagrams, auth &amp; CRUD flow diagrams, New Relic analytics breakdown, and full REST API reference.</p>
+          <div class="doc-link-banner-pills">
+            <span class="doc-link-banner-pill">Architecture Diagram</span>
+            <span class="doc-link-banner-pill">Auth Flow</span>
+            <span class="doc-link-banner-pill">CRUD Flow</span>
+            <span class="doc-link-banner-pill">UML Classes</span>
+            <span class="doc-link-banner-pill">New Relic Events</span>
+            <span class="doc-link-banner-pill">API Reference</span>
+          </div>
+        </div>
+      </div>
+      <a href="mvp2.html" target="_blank" class="doc-link-btn">
+        View Full Docs →
+      </a>
+    </div>
+
+    <div class="section-header"><h2>Architecture Breakdown</h2></div>
+    <div class="arch-grid">
+      <div class="arch-card"><div class="arch-icon">🏛</div><h4>Clean Architecture</h4><p>UI → Domain → Data layers with strict dependency rules — same pattern used in enterprise production apps.</p></div>
+      <div class="arch-card"><div class="arch-icon">🔁</div><h4>MVVM Pattern</h4><p>ViewModel manages UI state, keeping the UI layer thin and testable.</p></div>
+      <div class="arch-card"><div class="arch-icon">🔄</div><h4>Dependency Flow</h4><p>Dependencies point inward — domain layer has zero knowledge of Android framework.</p></div>
+      <div class="arch-card"><div class="arch-icon">🔐</div><h4>Login Auth Flow</h4><p>JWT token issued on login, stored securely, sent with every API request.</p></div>
+      <div class="arch-card"><div class="arch-icon">📦</div><h4>Product CRUD Flow</h4><p>Create, Read, Update, Delete with optimistic UI and error rollback.</p></div>
+      <div class="arch-card"><div class="arch-icon">📊</div><h4>New Relic Analytics</h4><p>Every screen view, user action, and error tracked in real-time via New Relic custom events.</p></div>
+    </div>
+
+    <div class="section-header"><h2>What This Demonstrates for Assessment</h2></div>
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon orange">🏗</div><h3>End-to-End Ownership</h3><p>Designed the backend API, built the Android frontend, and connected them — full technical ownership from scratch.</p></div>
+      <div class="card"><div class="card-icon teal">🏢</div><h3>Enterprise-Readiness</h3><p>For production I'd add 2FA, rate limiting, and email verification — already thinking at scale.</p></div>
+      <div class="card"><div class="card-icon yellow">📶</div><h3>Offline-First Thinking</h3><p>Local caching via Room and automatic sync — directly applicable to Tesco store environments.</p></div>
+      <div class="card"><div class="card-icon purple">📊</div><h3>Observability</h3><p>New Relic integrated for tracking every event, error, and performance metric — production-level monitoring mindset.</p></div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div id="skills" class="section">
+    <div class="section-header"><h2>Skills Demonstrated</h2><p>Technical breadth across tickets and projects this cycle.</p></div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h4>📱 Android Development</h4>
+        <div class="skill-item"><span class="skill-name">Jetpack Compose / Pager</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:85%;background:var(--accent)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">MVVM Pattern</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:90%;background:var(--accent)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Kotlin</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:88%;background:var(--accent)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">WebView handling</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:80%;background:var(--accent)"></div></div></div>
+      </div>
+      <div class="skill-card">
+        <h4>🔍 Debugging & Investigation</h4>
+        <div class="skill-item"><span class="skill-name">Charles Proxy</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:85%;background:var(--accent2)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">XAPI / API debugging</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:80%;background:var(--accent2)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Root Cause Analysis</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:92%;background:var(--accent2)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Crash Analysis</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:88%;background:var(--accent2)"></div></div></div>
+      </div>
+      <div class="skill-card">
+        <h4>🏛 Architecture & Design</h4>
+        <div class="skill-item"><span class="skill-name">Clean Architecture</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:85%;background:#7c3aed"></div></div></div>
+        <div class="skill-item"><span class="skill-name">DDS Components</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:80%;background:#7c3aed"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Data Mapping</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:82%;background:#7c3aed"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Defensive Coding</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:88%;background:#7c3aed"></div></div></div>
+      </div>
+      <div class="skill-card">
+        <h4>🤝 Collaboration</h4>
+        <div class="skill-item"><span class="skill-name">Cross-squad working</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:90%;background:var(--accent3)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Mango / API teams</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:85%;background:var(--accent3)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Confluence docs</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:78%;background:var(--accent3)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">PR management</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:85%;background:var(--accent3)"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYLLABUS -->
+  <div id="syllabus" class="section">
+    <div class="section-header"><h2>Syllabus Coverage</h2><p>Every promotion criterion mapped to real evidence from this cycle.</p></div>
+    <div class="syllabus-grid">
+      <div class="syllabus-card"><h4>🏗 Architecture & Design</h4>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Clean Architecture — MVP2 and ONA-52742 refactor</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">MVVM Pattern — applied consistently across all Android work</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">DDS usage — TescoBulletListTextView in ONA-52742</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Data mapping — ProductWarningMapper / ProductHazardInfoMapper</span></div>
+      </div>
+      <div class="syllabus-card"><h4>🐛 Quality & Debugging</h4>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">5 production bugs diagnosed — ONA-52371/94/92/72/26</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Crash fixed with coerceIn() — ONA-52372</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Charles Proxy API tracing — ONA-52294</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">PPE environment verification — ONA-52126</span></div>
+      </div>
+      <div class="syllabus-card"><h4>🚀 Feature Delivery</h4>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Product Dimensions feature end-to-end — ONA-53133</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Mango API contract change handled — ONA-53133</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Full CRUD + auth in MVP2 side project</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Offline-first sync design — MVP2</span></div>
+      </div>
+      <div class="syllabus-card"><h4>🤝 Collaboration</h4>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Coordinated with Mango team on ONA-52294 banner fix</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Escalated ONA-52292 to DDS team for design system fix</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Security Squad cross-squad — 3 tickets</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Confluence documentation maintained</span></div>
+      </div>
+      <div class="syllabus-card"><h4>🔐 Security</h4>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">JWT auth + bcrypt in MVP2</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Session management & token lifecycle</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Security Squad — MEDIA-5010, ONA-45583, ONA-53986</span></div>
+      </div>
+      <div class="syllabus-card"><h4>📈 Initiative & Growth</h4>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Self-directed MVP2 full-stack project</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Enterprise thinking — 2FA / rate limiting consideration</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Proactively posted in Mango Consumer channel</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Wiki & Confluence documentation ownership</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-overlay" id="m1" onclick="closeModalOutside(event,'m1')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m1')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52371 · Done ✓</span></div><h2>WebView Infinite Loader on API Failure</h2><p>GetProductImages returned 400/500/no internet → loader never dismissed</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">The Problem</div><p>When the <code>GetProductImages</code> API call failed — whether HTTP 400, HTTP 500, or no internet — the WebView loading spinner continued indefinitely. Users were left with a broken, unresponsive UI with no error feedback.</p></div>
+      <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Reproduced the issue by simulating all three failure modes (400, 500, offline)</li><li>Identified the missing error-state handling in the WebView controller</li><li>Implemented error callbacks to dismiss the loader and show an appropriate fallback state</li><li>Raised PR #15763 with fix and supporting video evidence (bug video + solution video)</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">WebView</span><span class="tag">Error State Handling</span><span class="tag">API Response Mgmt</span><span class="tag">Android</span><span class="tag">PR #15763</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52371" target="_blank">🔗 Jira Ticket — ONA-52371</a><a class="modal-link" href="https://github.dev.global.tesco.org/MobileApps/android-titan/pull/15763" target="_blank">🔗 PR #15763 — android-titan</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m2" onclick="closeModalOutside(event,'m2')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m2')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52294 · Done ✓</span></div><h2>PDP Instore Promotional Banner Not Displaying (UK)</h2><p>isForSale flag difference between online and instore caused banner to be hidden</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">The Problem</div><p>The promotional banner on the Product Detail Page (PDP) was visible for online users but completely absent for Instore UK users — causing missed promotions and an inconsistent customer experience.</p></div>
+      <div class="modal-section"><div class="modal-section-title">My Investigation</div><ul><li>Used <strong>Charles Proxy</strong> to intercept and inspect live PDP promotion banner API responses</li><li>Discovered <code>isForSale = true</code> for online and <code>isForSale = false</code> for instore in the Mango API response</li><li>The app logic was correct — the banner visibility flag itself was wrong in the data</li><li>Posted findings in the <strong>Mango Consumer channel</strong> and coordinated with Tarun from Mango team</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">Resolution</div><p>Mango team fixed the <code>isForSale</code> value for the instore context. Re-verified in app — promotional banner now visible correctly in Instore PDP.</p></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Charles Proxy</span><span class="tag">API Debugging</span><span class="tag">Cross-team Coordination</span><span class="tag">Root Cause Analysis</span><span class="tag">PDP</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52294" target="_blank">🔗 Jira Ticket — ONA-52294</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m3" onclick="closeModalOutside(event,'m3')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m3')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52292 · Closed</span></div><h2>Nutritional Info Headers Clipped for Long Text</h2><p>Root cause identified — escalated to DDS team for design system fix</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">The Problem</div><p>Nutritional information section headers were being clipped when the text was long, causing important content to be truncated and inaccessible to users.</p></div>
+      <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Identified the root cause — a fixed max-width constraint in the header text component causing truncation</li><li>Discussed the fix scope with the DDS (Design and Development System) team</li><li>DDS team raised design system PR #724 to resolve the layout constraint at the component level</li><li>Issue closed once the DDS component was updated and deployed</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">UI Debugging</span><span class="tag">DDS Collaboration</span><span class="tag">Design System Awareness</span><span class="tag">Escalation</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52292" target="_blank">🔗 Jira Ticket — ONA-52292</a><a class="modal-link" href="https://github.dev.global.tesco.org/TescoSharedPlatform/DDS-android/pull/724" target="_blank">🔗 DDS PR #724 — DDS-android</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m4" onclick="closeModalOutside(event,'m4')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m4')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52372 · In Review</span></div><h2>App Crash — Product Image Not Available</h2><p>IndexOutOfBoundsException when selectedImageIndex = -1 passed to HorizontalPager</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">The Crash</div><p>The app crashed whenever a product had no image available. The log showed:</p><div class="code-block"><span class="cm">IndexOutOfBoundsException: Index -1, size 1</span><br><span class="cm">at androidx.compose.foundation.pager.PagerMeasureKt.measurePager</span></div><p style="margin-top:12px;">When no image was available, <code>selectedImageIndex</code> was set to <code>-1</code>. HorizontalPager expects a valid index between 0 and (size-1) — passing -1 caused an immediate crash.</p></div>
+      <div class="modal-section"><div class="modal-section-title">The Fix — coerceIn()</div><div class="code-block"><span class="kw">val</span> validatedIndex = selectedImageIndex.<span class="fn">coerceIn</span>(<br>  <span class="str">0</span>, (images.size - <span class="str">1</span>).<span class="fn">coerceAtLeast</span>(<span class="str">0</span>)<br>)<br><br><span class="cm">// coerceIn clamps a value to a valid range:</span><br><span class="cm">// If value &lt; min → return min (0)</span><br><span class="cm">// If value &gt; max → return max</span><br><span class="cm">// Else → return value unchanged</span></div><p style="margin-top:12px;">This guarantees a valid index is always passed to the pager regardless of image availability — a reusable defensive pattern.</p></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Crash Analysis</span><span class="tag">Defensive Coding</span><span class="tag">Jetpack Compose</span><span class="tag">HorizontalPager</span><span class="tag">Kotlin coerceIn</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52372" target="_blank">🔗 Jira Ticket — ONA-52372</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m5" onclick="closeModalOutside(event,'m5')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m5')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52126 · Done ✓</span></div><h2>ROI — Safety & Product Warning Duplicate Display</h2><p>Both sections showing when values are identical (ROI region)</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">The Issue</div><p>In the ROI region, both 'Safety Information' and 'Product Warning' sections were appearing on the PDP screen even when both values were identical — potentially confusing customers with duplicated information.</p></div>
+      <div class="modal-section"><div class="modal-section-title">Investigation & Outcome</div><ul><li>Verified the reported issue in <strong>PPE</strong> against the ROI build</li><li>Result: <strong>Not reproducible</strong> — redundant items were not appearing in the current build</li><li>When both values are identical, only Safety Information is shown (correct deduplication behaviour)</li><li>Issue confirmed as working correctly — ticket closed</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">PPE Testing</span><span class="tag">Regional Variant Handling</span><span class="tag">QA Verification</span><span class="tag">ROI Build</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52126" target="_blank">🔗 Jira Ticket — ONA-52126</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m6" onclick="closeModalOutside(event,'m6')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m6')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-refactor">Refactor</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52742 · In Review</span></div><h2>Product Warning — Multi-Value Bullet List</h2><p>Only one element shown when warnings have multiple comma-separated values</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">The Problem</div><p>When Safety Information or Product Warnings contained multiple values in a JSON array, only one element was displayed. Users were missing important safety details.</p></div>
+      <div class="modal-section"><div class="modal-section-title">Root Cause</div><ul><li><strong>Safety Information</strong> → <code>ProductHazardInfoMapper</code> already added bullets with <code>.map { "• $it" }</code></li><li><strong>Product Warnings</strong> → <code>ProductWarningMapper</code> only joined text with newlines — no bullet formatting</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Tested on the latest UK build and mocked multiple values in XAPI preview response</li><li>Raised PR #15822 to align ProductWarningMapper formatting</li><li>Switched to DDS component <code>TescoBulletListTextView</code> for properly indented bullet list</li><li>Documented flow in Confluence: Product Warnings & Safety Info Flow</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">DDS Components</span><span class="tag">Data Mapping</span><span class="tag">XAPI Debugging</span><span class="tag">UI Consistency</span><span class="tag">PR #15822</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52742" target="_blank">🔗 Jira Ticket — ONA-52742</a><a class="modal-link" href="https://github.dev.global.tesco.org/MobileApps/android-titan/pull/15822" target="_blank">🔗 PR #15822 — android-titan</a><a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/352425764/Product+Warnings+Safety+Info+Flow" target="_blank">🔗 Confluence: Product Warnings & Safety Info Flow</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m7" onclick="closeModalOutside(event,'m7')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m7')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-feature">Feature</span><span style="color:#6b7280;font-size:0.85rem;">ONA-53133 · Done ✓</span></div><h2>Product Dimensions Feature</h2><p>New feature — displaying product dimensions on PDP per updated Mango contract</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">Feature Overview</div><p>Implemented a new Product Dimensions section on the PDP, surfacing dimension data from the updated Mango API contract to help customers make better-informed buying decisions.</p></div>
+      <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Worked with the Mango team to understand and implement the updated API contract</li><li>Delivered the feature end-to-end — from API data layer through ViewModel to UI</li><li>Raised Mango PR for contract changes</li><li>Documented the full feature and data flow in Confluence</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Feature Ownership</span><span class="tag">API Contract Changes</span><span class="tag">Mango Integration</span><span class="tag">Confluence Docs</span><span class="tag">PDP</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-53133" target="_blank">🔗 Jira Ticket — ONA-53133</a><a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/348433453/Product+Dimensions+Feature" target="_blank">🔗 Confluence: Product Dimensions Feature</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m8" onclick="closeModalOutside(event,'m8')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m8')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">MEDIA-5010 · Done ✓</span></div><h2>Security Squad — MEDIA-5010</h2><p>Cross-squad security contribution</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">Contribution</div><p>Contributed to the Security Squad as part of cross-squad collaboration. Supported investigation and analysis on this media-related security ticket.</p></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Cross-squad Collaboration</span><span class="tag">Security Mindset</span><span class="tag">Media Handling</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/MEDIA-5010" target="_blank">🔗 Jira Ticket — MEDIA-5010</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m9" onclick="closeModalOutside(event,'m9')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m9')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">ONA-45583 · Done ✓</span></div><h2>Security Squad — ONA-45583</h2><p>Cross-squad security contribution</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">Contribution</div><p>Supported the Security Squad on this authentication-related ticket — directly complementing the JWT auth work I built in my MVP2 project.</p></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Authentication Flows</span><span class="tag">JWT Handling</span><span class="tag">Security Best Practices</span><span class="tag">Cross-squad</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-45583" target="_blank">🔗 Jira Ticket — ONA-45583</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m10" onclick="closeModalOutside(event,'m10')">
+  <div class="modal">
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m10')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">ONA-53986 · Done ✓</span></div><h2>Security Squad — ONA-53986</h2><p>Cross-squad security contribution</p></div>
+    <div class="modal-body">
+      <div class="modal-section"><div class="modal-section-title">Contribution</div><p>Assisted the Security Squad on a session management issue — ensuring auth tokens are properly invalidated on logout. Directly relates to the session management work I implemented in MVP2.</p></div>
+      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Session Management</span><span class="tag">Token Lifecycle</span><span class="tag">Secure Logout</span><span class="tag">Cross-squad</span></div></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-53986" target="_blank">🔗 Jira Ticket — ONA-53986</a></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleSummary(id, row) {
+  const panel = document.getElementById(id);
+  const isOpen = panel.classList.contains('open');
+  document.querySelectorAll('.summary-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.ticket-item').forEach(t => t.classList.remove('expanded'));
+  if (!isOpen) { panel.classList.add('open'); row.classList.add('expanded'); }
+}
+function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+function closeModalOutside(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay.open').forEach(m => { m.classList.remove('open'); document.body.style.overflow = ''; }); }
+});
+</script>
+</body>
+</html>
