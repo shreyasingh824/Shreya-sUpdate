@@ -436,7 +436,7 @@
               <div><div class="summary-label">Root Cause</div><div class="summary-value"><code>selectedImageIndex = -1</code> passed to HorizontalPager → crash</div></div>
               <div><div class="summary-label">Fix</div><div class="summary-value"><code>coerceIn()</code> clamps index to valid range — no more invalid state</div></div>
               <div><div class="summary-label">Skills</div><div class="summary-value">Crash analysis, defensive coding, Jetpack Compose Pager</div></div>
-              <div><div class="summary-label">Status</div><div class="summary-value">🔄 In Review</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">Done</div></div>
             </div>
             <button class="view-detail-btn" onclick="openModal('m4')">View Full Detail →</button>
           </div>
@@ -740,7 +740,7 @@
 
 <div class="modal-overlay" id="m4" onclick="closeModalOutside(event,'m4')">
   <div class="modal">
-    <div class="modal-header"><button class="modal-close" onclick="closeModal('m4')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52372 · In Review</span></div><h2>App Crash — Product Image Not Available</h2><p>IndexOutOfBoundsException when selectedImageIndex = -1 passed to HorizontalPager</p></div>
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m4')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52372 · Done</span></div><h2>App Crash — Product Image Not Available</h2><p>IndexOutOfBoundsException when selectedImageIndex = -1 passed to HorizontalPager</p></div>
     <div class="modal-body">
       <div class="modal-section"><div class="modal-section-title">The Crash</div><p>The app crashed whenever a product had no image available. The log showed:</p><div class="code-block"><span class="cm">IndexOutOfBoundsException: Index -1, size 1</span><br><span class="cm">at androidx.compose.foundation.pager.PagerMeasureKt.measurePager</span></div><p style="margin-top:12px;">When no image was available, <code>selectedImageIndex</code> was set to <code>-1</code>. HorizontalPager expects a valid index between 0 and (size-1) — passing -1 caused an immediate crash.</p></div>
       <div class="modal-section"><div class="modal-section-title">The Fix — coerceIn()</div><div class="code-block"><span class="kw">val</span> validatedIndex = selectedImageIndex.<span class="fn">coerceIn</span>(<br>  <span class="str">0</span>, (images.size - <span class="str">1</span>).<span class="fn">coerceAtLeast</span>(<span class="str">0</span>)<br>)<br><br><span class="cm">// coerceIn clamps a value to a valid range:</span><br><span class="cm">// If value &lt; min → return min (0)</span><br><span class="cm">// If value &gt; max → return max</span><br><span class="cm">// Else → return value unchanged</span></div><p style="margin-top:12px;">This guarantees a valid index is always passed to the pager regardless of image availability — a reusable defensive pattern.</p></div>
