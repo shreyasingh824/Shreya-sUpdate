@@ -77,6 +77,7 @@
   .status-done { background: #d1fae5; color: #065f46; }
   .status-review { background: #fef3c7; color: #92400e; }
   .status-closed { background: #f3f4f6; color: #6b7280; }
+  .status-inprogress { background: #e0f2fe; color: #0369a1; }
   .ticket-chevron { font-size: 0.75rem; color: var(--muted); transition: transform 0.25s; flex-shrink: 0; }
   .ticket-item.expanded .ticket-chevron { transform: rotate(180deg); }
 
@@ -241,7 +242,6 @@
 
   <!-- OVERVIEW -->
   <div id="overview" class="section active">
-
     <div style="background:var(--ink);border-radius:16px;padding:36px 40px;margin-bottom:36px;color:white;position:relative;overflow:hidden;">
       <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:var(--accent);opacity:0.08;"></div>
       <div style="position:absolute;bottom:-30px;left:30%;width:140px;height:140px;border-radius:50%;background:var(--accent2);opacity:0.1;"></div>
@@ -275,28 +275,79 @@
         </svg>
         <p style="font-size:0.83rem;color:var(--muted);line-height:1.65;">The Tesco app follows Clean Architecture — UI, Domain, and Data layers with strict inward-pointing dependencies. The Domain layer has <strong>zero knowledge</strong> of Android. This is the pattern I applied in my MVP2 side project and reinforce with every refactor I do.</p>
       </div>
-
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:28px;">
         <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:16px;"> MVVM Pattern</div>
-        <svg viewBox="0 0 320 200" style="width:100%;height:auto;margin-bottom:16px;" xmlns="http://www.w3.org/2000/svg">
-          <rect x="100" y="20" width="120" height="44" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
-          <text x="160" y="47" text-anchor="middle" font-size="12" font-weight="700" fill="#9d174d">ViewModel</text>
-          <rect x="20" y="130" width="110" height="44" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="1.5"/>
-          <text x="75" y="157" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af">Model</text>
-          <rect x="190" y="130" width="110" height="44" rx="8" fill="#d1fae5" stroke="#34d399" stroke-width="1.5"/>
-          <text x="245" y="157" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">View(s)</text>
-          <line x1="100" y1="64" x2="75" y2="130" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-          <line x1="130" y1="64" x2="245" y2="130" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-          <line x1="130" y1="130" x2="120" y2="68" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr2)"/>
-          <text x="44" y="102" font-size="8" fill="#64748b">updates</text>
-          <text x="185" y="100" font-size="8" fill="#64748b">observes</text>
-          <text x="108" y="100" font-size="8" fill="#ec4899">UI state</text>
+        <svg viewBox="0 0 320 370" style="width:100%;height:auto;margin-bottom:16px;" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker>
-            <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#ec4899"/></marker>
+            <marker id="arr-solid" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#e76f51"/></marker>
+            <marker id="arr-dash" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#2a9d8f"/></marker>
+            <marker id="arr-dash2" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#2a9d8f"/></marker>
           </defs>
+
+          <!-- View box -->
+          <rect x="90" y="8" width="140" height="52" rx="10" fill="#f87171" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="160" y="29" text-anchor="middle" font-size="12" font-weight="700" fill="white">View</text>
+          <text x="160" y="46" text-anchor="middle" font-size="9" fill="#fee2e2">(UI/XML)</text>
+
+          <!-- UI Event arrow: View → ViewModel (solid, left side) -->
+          <line x1="138" y1="60" x2="128" y2="108" stroke="#e76f51" stroke-width="2" marker-end="url(#arr-solid)"/>
+          <text x="88" y="82" font-size="8" fill="#6b7280">UI Event</text>
+
+          <!-- Observe response arrow: ViewModel → View (dashed, right side) -->
+          <line x1="192" y1="108" x2="182" y2="60" stroke="#2a9d8f" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arr-dash)"/>
+          <text x="195" y="82" font-size="8" fill="#6b7280">Observe</text>
+          <text x="195" y="92" font-size="8" fill="#6b7280">response</text>
+
+          <!-- ViewModel box -->
+          <rect x="72" y="108" width="176" height="56" rx="10" fill="#38bdf8" stroke="#0ea5e9" stroke-width="1.5"/>
+          <text x="160" y="129" text-anchor="middle" font-size="12" font-weight="700" fill="white">ViewModel</text>
+          <text x="160" y="144" text-anchor="middle" font-size="8.5" fill="#e0f2fe">(Intermediate / RxJava/</text>
+          <text x="160" y="155" text-anchor="middle" font-size="8.5" fill="#e0f2fe">LiveData)</text>
+
+          <!-- Model dashed border -->
+          <rect x="8" y="192" width="304" height="166" rx="10" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 3"/>
+          <text x="286" y="210" font-size="10" fill="#38bdf8" font-weight="600">Model</text>
+
+          <!-- Send request: ViewModel → Repository (solid, left) -->
+          <line x1="138" y1="164" x2="138" y2="220" stroke="#e76f51" stroke-width="2" marker-end="url(#arr-solid)"/>
+          <text x="52" y="196" font-size="8" fill="#6b7280">Send request</text>
+
+          <!-- Observe model change callbacks: Repository → ViewModel (dashed, right) -->
+          <line x1="182" y1="220" x2="182" y2="164" stroke="#2a9d8f" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arr-dash)"/>
+          <text x="188" y="190" font-size="8" fill="#6b7280">Observe model</text>
+          <text x="188" y="200" font-size="8" fill="#6b7280">change callbacks</text>
+
+          <!-- Repository box -->
+          <rect x="90" y="220" width="140" height="44" rx="10" fill="#2a9d8f" stroke="#1d7a6e" stroke-width="1.5"/>
+          <text x="160" y="247" text-anchor="middle" font-size="12" font-weight="700" fill="white">Repository</text>
+
+          <!-- Local DataSource box -->
+          <rect x="16" y="302" width="100" height="44" rx="8" fill="#2a9d8f" stroke="#1d7a6e" stroke-width="1.5"/>
+          <text x="66" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="white">Local</text>
+          <text x="66" y="334" text-anchor="middle" font-size="10" font-weight="700" fill="white">DataSource</text>
+
+          <!-- Remote DataSource box -->
+          <rect x="204" y="302" width="100" height="44" rx="8" fill="#2a9d8f" stroke="#1d7a6e" stroke-width="1.5"/>
+          <text x="254" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="white">Remote</text>
+          <text x="254" y="334" text-anchor="middle" font-size="10" font-weight="700" fill="white">DataSource</text>
+
+          <!-- Repo → Local: solid red (receive data) -->
+          <line x1="120" y1="264" x2="76" y2="302" stroke="#e76f51" stroke-width="2" marker-end="url(#arr-solid)"/>
+          <text x="64" y="279" font-size="7.5" fill="#6b7280">receive data</text>
+
+          <!-- Local → Repo: dashed teal (send response) -->
+          <line x1="56" y1="302" x2="100" y2="266" stroke="#2a9d8f" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arr-dash2)"/>
+          <text x="18" y="293" font-size="7.5" fill="#6b7280">send response</text>
+
+          <!-- Repo → Remote: solid red (receive data) -->
+          <line x1="200" y1="264" x2="244" y2="302" stroke="#e76f51" stroke-width="2" marker-end="url(#arr-solid)"/>
+          <text x="210" y="279" font-size="7.5" fill="#6b7280">receive data</text>
+
+          <!-- Remote → Repo: dashed teal (send response) -->
+          <line x1="264" y1="302" x2="220" y2="266" stroke="#2a9d8f" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arr-dash2)"/>
+          <text x="230" y="293" font-size="7.5" fill="#6b7280">send response</text>
         </svg>
-        <p style="font-size:0.83rem;color:var(--muted);line-height:1.65;">The Tesco app uses <strong>MVVM</strong> in the presentation layer. The ViewModel holds and exposes UI state; Views observe and react. This keeps UI logic testable and separated from business logic. My bug fixes for ONA-52372 (Pager crash) and ONA-52292 (UI clipping) were both diagnosed through this layered lens.</p>
+        <p style="font-size:0.83rem;color:var(--muted);line-height:1.65;">The Tesco app uses <strong>MVVM</strong> — the View sends UI events to the ViewModel, which communicates with the Repository. The Repository coordinates Local and Remote DataSources, sending results back up via observable callbacks. My bug fixes for ONA-52372 (Pager crash) and ONA-52292 (UI clipping) were both diagnosed through this layered lens.</p>
       </div>
     </div>
 
@@ -319,7 +370,7 @@
     <div class="section-header"><h2>This Cycle — What I Delivered</h2><p>Concrete contributions across bugs, refactoring, features, and cross-squad work.</p></div>
     <div class="cards-grid">
       <div class="card"><div class="card-icon orange"></div><h3>5 Bug Fixes</h3><p>WebView infinite loaders, IndexOutOfBoundsException crash, UI text clipping, Instore banner invisibility, ROI duplicate warnings — all investigated root-cause-first.</p></div>
-      <div class="card"><div class="card-icon teal"></div><h3>Security Squad</h3><p>Contributed to 3 cross-squad security tickets (MEDIA-5010, ONA-45583, ONA-53986) — showing I can work beyond my primary squad on critical areas.</p></div>
+      <div class="card"><div class="card-icon teal"></div><h3>Security Squad</h3><p>Contributed to 3 cross-squad security tickets (MEDIA-5010, ONA-45583, ONA-53986) — NDK/JNI POC, encryption best practices research, and active .so key hardening in Titan.</p></div>
       <div class="card"><div class="card-icon yellow"></div><h3>Feature + Refactor</h3><p>Delivered Product Dimensions feature end-to-end (ONA-53133) and refactored Product Warning display to use DDS TescoBulletListTextView (ONA-52742).</p></div>
       <div class="card"><div class="card-icon purple"></div><h3>MVP2 Side Project</h3><p>Built a complete Android + Node.js + MongoDB app from scratch applying the same MVVM + Clean Architecture patterns used in the Tesco production codebase.</p></div>
     </div>
@@ -340,10 +391,10 @@
     <div class="section-header"><h2>Tickets Worked On</h2><p>Tap a ticket for a quick summary · Click <strong>View Full Detail →</strong> for the deep dive.</p></div>
 
     <div class="ticket-group">
-      <div class="ticket-group-title">🐛 Bug Tickets — Tasks Update Squad</div>
+      <div class="ticket-group-title"> Bug Tickets — Tasks Update Squad</div>
       <div class="ticket-list">
         <div>
-          <div class="ticket-item" onclick="toggleSummary('s1',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52371</span><span class="ticket-desc">WebView loader stuck infinitely on API failure</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="ticket-item" onclick="toggleSummary('s1',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52371</span><span class="ticket-desc">WebView loader stuck infinitely on API failure</span><span class="ticket-status status-done">Fixed ✓</span><span class="ticket-chevron">▼</span></div>
           <div class="summary-panel" id="s1">
             <div class="summary-grid">
               <div><div class="summary-label">Issue</div><div class="summary-value">Loader spins forever when <code>GetProductImages</code> returns 400 / 500 / no internet</div></div>
@@ -355,7 +406,7 @@
           </div>
         </div>
         <div>
-          <div class="ticket-item" onclick="toggleSummary('s2',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52294</span><span class="ticket-desc">PDP Instore promotional banner not displaying (UK)</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="ticket-item" onclick="toggleSummary('s2',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52294</span><span class="ticket-desc">PDP Instore promotional banner not displaying (UK)</span><span class="ticket-status status-done">Fixed ✓</span><span class="ticket-chevron">▼</span></div>
           <div class="summary-panel" id="s2">
             <div class="summary-grid">
               <div><div class="summary-label">Issue</div><div class="summary-value">Promo banner hidden in Instore PDP for UK users</div></div>
@@ -379,7 +430,7 @@
           </div>
         </div>
         <div>
-          <div class="ticket-item" onclick="toggleSummary('s4',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52372</span><span class="ticket-desc">App crash — product image not available (IndexOutOfBoundsException)</span><span class="ticket-status status-review">In Review</span><span class="ticket-chevron">▼</span></div>
+          <div class="ticket-item" onclick="toggleSummary('s4',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52372</span><span class="ticket-desc">App crash — product image not available (IndexOutOfBoundsException)</span><span class="ticket-status status-done">Fixed ✓</span><span class="ticket-chevron">▼</span></div>
           <div class="summary-panel" id="s4">
             <div class="summary-grid">
               <div><div class="summary-label">Root Cause</div><div class="summary-value"><code>selectedImageIndex = -1</code> passed to HorizontalPager → crash</div></div>
@@ -391,7 +442,7 @@
           </div>
         </div>
         <div>
-          <div class="ticket-item" onclick="toggleSummary('s5',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52126</span><span class="ticket-desc">ROI — Safety & Product Warning duplicate display</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="ticket-item" onclick="toggleSummary('s5',this)"><span class="ticket-badge badge-bug">Bug</span><span class="ticket-id">ONA-52126</span><span class="ticket-desc">ROI — Safety &amp; Product Warning duplicate display</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
           <div class="summary-panel" id="s5">
             <div class="summary-grid">
               <div><div class="summary-label">Issue</div><div class="summary-value">Both 'Safety Info' and 'Product Warning' shown when values are the same (ROI)</div></div>
@@ -406,10 +457,10 @@
     </div>
 
     <div class="ticket-group">
-      <div class="ticket-group-title">🔄 Refactor Tickets — Tasks Update Squad</div>
+      <div class="ticket-group-title"> Refactor Tickets — Tasks Update Squad</div>
       <div class="ticket-list">
         <div>
-          <div class="ticket-item" onclick="toggleSummary('s6',this)"><span class="ticket-badge badge-refactor">Refactor</span><span class="ticket-id">ONA-52742</span><span class="ticket-desc">Product Warning — multi-value bullet list not rendering correctly</span><span class="ticket-status status-review">In Review</span><span class="ticket-chevron">▼</span></div>
+          <div class="ticket-item" onclick="toggleSummary('s6',this)"><span class="ticket-badge badge-refactor">Refactor</span><span class="ticket-id">ONA-52742</span><span class="ticket-desc">Product Warning — multi-value bullet list not rendering correctly</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
           <div class="summary-panel" id="s6">
             <div class="summary-grid">
               <div><div class="summary-label">Issue</div><div class="summary-value">Only one element shown for multi-value Safety/Product Warning arrays</div></div>
@@ -424,7 +475,7 @@
     </div>
 
     <div class="ticket-group">
-      <div class="ticket-group-title">✨ Feature Tickets — Tasks Update Squad</div>
+      <div class="ticket-group-title"> Feature Tickets — Tasks Update Squad</div>
       <div class="ticket-list">
         <div>
           <div class="ticket-item" onclick="toggleSummary('s7',this)"><span class="ticket-badge badge-feature">Feature</span><span class="ticket-id">ONA-53133</span><span class="ticket-desc">Product Dimensions — new feature delivery</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
@@ -442,34 +493,58 @@
     </div>
 
     <div class="ticket-group">
-      <div class="ticket-group-title">🔒 Security Squad — Cross-Squad Contribution</div>
+      <div class="ticket-group-title"> Security Squad — Cross-Squad Contribution</div>
       <div class="ticket-list">
         <div>
-          <div class="ticket-item" onclick="toggleSummary('s8',this)"><span class="ticket-badge badge-security">Security</span><span class="ticket-id">MEDIA-5010</span><span class="ticket-desc">Security Squad — media-related contribution</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="ticket-item" onclick="toggleSummary('s8',this)">
+            <span class="ticket-badge badge-security">Security</span>
+            <span class="ticket-id">MEDIA-5010</span>
+            <span class="ticket-desc">POC — Hardening API key storage using native .so files (NDK/JNI)</span>
+            <span class="ticket-status status-done">Done ✓</span>
+            <span class="ticket-chevron">▼</span>
+          </div>
           <div class="summary-panel" id="s8">
             <div class="summary-grid">
-              <div><div class="summary-label">Squad</div><div class="summary-value">Security Squad (cross-squad contribution)</div></div>
-              <div><div class="summary-label">Skills</div><div class="summary-value">Security mindset, cross-team working, media handling</div></div>
+              <div><div class="summary-label">What I Did</div><div class="summary-value">Created a POC Android app storing API keys in native <code>.so</code> files via NDK, accessed from Kotlin using JNI</div></div>
+              <div><div class="summary-label">Outcome</div><div class="summary-value">Documented security benefits, limitations, and a clear recommendation — full POC on Confluence</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">Android NDK, JNI, APK reverse engineering analysis, security hardening</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">✅ Done</div></div>
             </div>
             <button class="view-detail-btn" onclick="openModal('m8')">View Full Detail →</button>
           </div>
         </div>
         <div>
-          <div class="ticket-item" onclick="toggleSummary('s9',this)"><span class="ticket-badge badge-security">Security</span><span class="ticket-id">ONA-45583</span><span class="ticket-desc">Security Squad — authentication contribution</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="ticket-item" onclick="toggleSummary('s9',this)">
+            <span class="ticket-badge badge-security">Security</span>
+            <span class="ticket-id">ONA-45583</span>
+            <span class="ticket-desc">[Encryption] Study &amp; explore best practices for storing keys in mobile apps</span>
+            <span class="ticket-status status-done">Done ✓</span>
+            <span class="ticket-chevron">▼</span>
+          </div>
           <div class="summary-panel" id="s9">
             <div class="summary-grid">
-              <div><div class="summary-label">Squad</div><div class="summary-value">Security Squad (cross-squad contribution)</div></div>
-              <div><div class="summary-label">Skills</div><div class="summary-value">Authentication flows, JWT handling, security practices</div></div>
+              <div><div class="summary-label">What I Did</div><div class="summary-value">Researched and documented best practices for storing sensitive keys and data in Android apps</div></div>
+              <div><div class="summary-label">Outcome</div><div class="summary-value">Published findings on Confluence — covers EncryptedSharedPreferences, Keystore, NDK tradeoffs</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">Encryption, key management, Android Keystore, security research</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">✅ Done</div></div>
             </div>
             <button class="view-detail-btn" onclick="openModal('m9')">View Full Detail →</button>
           </div>
         </div>
         <div>
-          <div class="ticket-item" onclick="toggleSummary('s10',this)"><span class="ticket-badge badge-security">Security</span><span class="ticket-id">ONA-53986</span><span class="ticket-desc">Security Squad — session management contribution</span><span class="ticket-status status-done">Done ✓</span><span class="ticket-chevron">▼</span></div>
+          <div class="ticket-item" onclick="toggleSummary('s10',this)">
+            <span class="ticket-badge badge-security">Security</span>
+            <span class="ticket-id">ONA-53986</span>
+            <span class="ticket-desc">[Android] Introduce .so file with 1 key in Titan to improve key security</span>
+            <span class="ticket-status status-inprogress">In Progress</span>
+            <span class="ticket-chevron">▼</span>
+          </div>
           <div class="summary-panel" id="s10">
             <div class="summary-grid">
-              <div><div class="summary-label">Squad</div><div class="summary-value">Security Squad (cross-squad contribution)</div></div>
-              <div><div class="summary-label">Skills</div><div class="summary-value">Session management, token lifecycle, secure logout</div></div>
+              <div><div class="summary-label">What I'm Doing</div><div class="summary-value">Storing the New Relic key of the Titan project in a native <code>.so</code> file using Android NDK</div></div>
+              <div><div class="summary-label">Approach</div><div class="summary-value">Exploring XXTea algorithm to store the encryption key — adding a second layer of protection beyond NDK obfuscation</div></div>
+              <div><div class="summary-label">Skills</div><div class="summary-value">NDK, XXTea encryption, reverse engineering defence, production key hardening</div></div>
+              <div><div class="summary-label">Status</div><div class="summary-value">🔵 In Progress</div></div>
             </div>
             <button class="view-detail-btn" onclick="openModal('m10')">View Full Detail →</button>
           </div>
@@ -478,11 +553,10 @@
     </div>
   </div>
 
-  <!-- ═══ MVP2 TAB ═══ -->
+  <!-- MVP2 TAB -->
   <div id="mvp2" class="section">
     <div class="section-header"><h2>MVP2 — Product Management App</h2><p>A full-stack side project built to demonstrate real-world architecture and engineering skills.</p></div>
 
-    <!-- PROJECT HERO -->
     <div class="project-hero">
       <h3>Why I Built This</h3>
       <p>This app implements the same foundational patterns used in production at scale — secure authentication, offline-first design, and clean architecture — to show I can independently design and deliver a complete system.</p>
@@ -502,7 +576,6 @@
       </div>
     </div>
 
-    <!-- ✅ DOCUMENTATION LINK BANNER — NEW -->
     <div class="doc-link-banner">
       <div class="doc-link-banner-left">
         <div class="doc-link-banner-icon">📄</div>
@@ -519,9 +592,7 @@
           </div>
         </div>
       </div>
-      <a href="MVP2" target="_blank" class="doc-link-btn">
-        View Full Docs →
-      </a>
+      <a href="mvp2.html" target="_blank" class="doc-link-btn">View Full Docs →</a>
     </div>
 
     <div class="section-header"><h2>Architecture Breakdown</h2></div>
@@ -607,9 +678,10 @@
         <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Confluence documentation maintained</span></div>
       </div>
       <div class="syllabus-card"><h4>🔐 Security</h4>
-        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">JWT auth + bcrypt in MVP2</span></div>
-        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Session management & token lifecycle</span></div>
-        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Security Squad — MEDIA-5010, ONA-45583, ONA-53986</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">NDK/JNI POC for API key hardening in APK/AAB — MEDIA-5010</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Encryption best practices research — ONA-45583</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">New Relic key hardening + XXTea in Titan — ONA-53986</span></div>
+        <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">JWT auth + EncryptedSharedPreferences in MVP2</span></div>
       </div>
       <div class="syllabus-card"><h4>📈 Initiative & Growth</h4>
         <div class="syl-item"><span class="syl-check">✓</span><span class="syl-text">Self-directed MVP2 full-stack project</span></div>
@@ -619,18 +691,21 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- ============ MODALS ============ -->
 <div class="modal-overlay" id="m1" onclick="closeModalOutside(event,'m1')">
   <div class="modal">
-    <div class="modal-header"><button class="modal-close" onclick="closeModal('m1')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52371 · Done ✓</span></div><h2>WebView Infinite Loader on API Failure</h2><p>GetProductImages returned 400/500/no internet → loader never dismissed</p></div>
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m1')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52371 · Fixed ✓</span></div><h2>WebView Infinite Loader on API Failure</h2><p>GetProductImages returned 400/500/no internet → loader never dismissed</p></div>
     <div class="modal-body">
       <div class="modal-section"><div class="modal-section-title">The Problem</div><p>When the <code>GetProductImages</code> API call failed — whether HTTP 400, HTTP 500, or no internet — the WebView loading spinner continued indefinitely. Users were left with a broken, unresponsive UI with no error feedback.</p></div>
       <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Reproduced the issue by simulating all three failure modes (400, 500, offline)</li><li>Identified the missing error-state handling in the WebView controller</li><li>Implemented error callbacks to dismiss the loader and show an appropriate fallback state</li><li>Raised PR #15763 with fix and supporting video evidence (bug video + solution video)</li></ul></div>
       <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">WebView</span><span class="tag">Error State Handling</span><span class="tag">API Response Mgmt</span><span class="tag">Android</span><span class="tag">PR #15763</span></div></div>
-      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52371" target="_blank">🔗 Jira Ticket — ONA-52371</a><a class="modal-link" href="https://github.dev.global.tesco.org/MobileApps/android-titan/pull/15763" target="_blank">🔗 PR #15763 — android-titan</a></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div>
+        <a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52371" target="_blank">🔗 Jira Ticket — ONA-52371</a>
+        <a class="modal-link" href="https://github.dev.global.tesco.org/MobileApps/android-titan/pull/15763" target="_blank">🔗 PR #15763 — android-titan</a>
+        <a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/337353631/PDP+-+BUG+Infinite+Loading+Spinner+Bug+-+Root+Cause+Analysis" target="_blank">🔗 Confluence Documentation</a>
+      </div>
     </div>
   </div>
 </div>
@@ -653,9 +728,12 @@
     <div class="modal-header"><button class="modal-close" onclick="closeModal('m3')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52292 · Closed</span></div><h2>Nutritional Info Headers Clipped for Long Text</h2><p>Root cause identified — escalated to DDS team for design system fix</p></div>
     <div class="modal-body">
       <div class="modal-section"><div class="modal-section-title">The Problem</div><p>Nutritional information section headers were being clipped when the text was long, causing important content to be truncated and inaccessible to users.</p></div>
-      <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Identified the root cause — a fixed max-width constraint in the header text component causing truncation</li><li>Discussed the fix scope with the DDS (Design and Development System) team</li><li>DDS team raised design system PR #724 to resolve the layout constraint at the component level</li><li>Issue closed once the DDS component was updated and deployed</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Identified the root cause — a fixed max-width constraint in the header text component causing truncation</li><li>Discussed the fix scope with the DDS team</li><li>DDS team raised design system PR #724 to resolve the layout constraint at the component level</li><li>Issue closed once the DDS component was updated and deployed</li></ul></div>
       <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">UI Debugging</span><span class="tag">DDS Collaboration</span><span class="tag">Design System Awareness</span><span class="tag">Escalation</span></div></div>
-      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52292" target="_blank">🔗 Jira Ticket — ONA-52292</a><a class="modal-link" href="https://github.dev.global.tesco.org/TescoSharedPlatform/DDS-android/pull/724" target="_blank">🔗 DDS PR #724 — DDS-android</a></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div>
+        <a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52292" target="_blank">🔗 Jira Ticket — ONA-52292</a>
+        <a class="modal-link" href="https://github.dev.global.tesco.org/TescoSharedPlatform/DDS-android/pull/724" target="_blank">🔗 DDS PR #724 — DDS-android</a>
+      </div>
     </div>
   </div>
 </div>
@@ -667,14 +745,17 @@
       <div class="modal-section"><div class="modal-section-title">The Crash</div><p>The app crashed whenever a product had no image available. The log showed:</p><div class="code-block"><span class="cm">IndexOutOfBoundsException: Index -1, size 1</span><br><span class="cm">at androidx.compose.foundation.pager.PagerMeasureKt.measurePager</span></div><p style="margin-top:12px;">When no image was available, <code>selectedImageIndex</code> was set to <code>-1</code>. HorizontalPager expects a valid index between 0 and (size-1) — passing -1 caused an immediate crash.</p></div>
       <div class="modal-section"><div class="modal-section-title">The Fix — coerceIn()</div><div class="code-block"><span class="kw">val</span> validatedIndex = selectedImageIndex.<span class="fn">coerceIn</span>(<br>  <span class="str">0</span>, (images.size - <span class="str">1</span>).<span class="fn">coerceAtLeast</span>(<span class="str">0</span>)<br>)<br><br><span class="cm">// coerceIn clamps a value to a valid range:</span><br><span class="cm">// If value &lt; min → return min (0)</span><br><span class="cm">// If value &gt; max → return max</span><br><span class="cm">// Else → return value unchanged</span></div><p style="margin-top:12px;">This guarantees a valid index is always passed to the pager regardless of image availability — a reusable defensive pattern.</p></div>
       <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Crash Analysis</span><span class="tag">Defensive Coding</span><span class="tag">Jetpack Compose</span><span class="tag">HorizontalPager</span><span class="tag">Kotlin coerceIn</span></div></div>
-      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52372" target="_blank">🔗 Jira Ticket — ONA-52372</a></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div>
+        <a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52372" target="_blank">🔗 Jira Ticket — ONA-52372</a>
+        <a class="modal-link" href="https://github.dev.global.tesco.org/MobileApps/android-titan/pull/15823" target="_blank">🔗 PR #15823 — android-titan</a>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="m5" onclick="closeModalOutside(event,'m5')">
   <div class="modal">
-    <div class="modal-header"><button class="modal-close" onclick="closeModal('m5')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52126 · Done ✓</span></div><h2>ROI — Safety & Product Warning Duplicate Display</h2><p>Both sections showing when values are identical (ROI region)</p></div>
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m5')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-bug">Bug</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52126 · Done ✓</span></div><h2>ROI — Safety &amp; Product Warning Duplicate Display</h2><p>Both sections showing when values are identical (ROI region)</p></div>
     <div class="modal-body">
       <div class="modal-section"><div class="modal-section-title">The Issue</div><p>In the ROI region, both 'Safety Information' and 'Product Warning' sections were appearing on the PDP screen even when both values were identical — potentially confusing customers with duplicated information.</p></div>
       <div class="modal-section"><div class="modal-section-title">Investigation & Outcome</div><ul><li>Verified the reported issue in <strong>PPE</strong> against the ROI build</li><li>Result: <strong>Not reproducible</strong> — redundant items were not appearing in the current build</li><li>When both values are identical, only Safety Information is shown (correct deduplication behaviour)</li><li>Issue confirmed as working correctly — ticket closed</li></ul></div>
@@ -686,13 +767,17 @@
 
 <div class="modal-overlay" id="m6" onclick="closeModalOutside(event,'m6')">
   <div class="modal">
-    <div class="modal-header"><button class="modal-close" onclick="closeModal('m6')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-refactor">Refactor</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52742 · In Review</span></div><h2>Product Warning — Multi-Value Bullet List</h2><p>Only one element shown when warnings have multiple comma-separated values</p></div>
+    <div class="modal-header"><button class="modal-close" onclick="closeModal('m6')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-refactor">Refactor</span><span style="color:#6b7280;font-size:0.85rem;">ONA-52742 · Done ✓</span></div><h2>Product Warning — Multi-Value Bullet List</h2><p>Only one element shown when warnings have multiple comma-separated values</p></div>
     <div class="modal-body">
       <div class="modal-section"><div class="modal-section-title">The Problem</div><p>When Safety Information or Product Warnings contained multiple values in a JSON array, only one element was displayed. Users were missing important safety details.</p></div>
       <div class="modal-section"><div class="modal-section-title">Root Cause</div><ul><li><strong>Safety Information</strong> → <code>ProductHazardInfoMapper</code> already added bullets with <code>.map { "• $it" }</code></li><li><strong>Product Warnings</strong> → <code>ProductWarningMapper</code> only joined text with newlines — no bullet formatting</li></ul></div>
-      <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Tested on the latest UK build and mocked multiple values in XAPI preview response</li><li>Raised PR #15822 to align ProductWarningMapper formatting</li><li>Switched to DDS component <code>TescoBulletListTextView</code> for properly indented bullet list</li><li>Documented flow in Confluence: Product Warnings & Safety Info Flow</li></ul></div>
+      <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Tested on the latest UK build and mocked multiple values in XAPI preview response</li><li>Raised PR #15822 to align ProductWarningMapper formatting</li><li>Switched to DDS component <code>TescoBulletListTextView</code> for properly indented bullet list</li><li>Documented flow in Confluence: Product Warnings &amp; Safety Info Flow</li></ul></div>
       <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">DDS Components</span><span class="tag">Data Mapping</span><span class="tag">XAPI Debugging</span><span class="tag">UI Consistency</span><span class="tag">PR #15822</span></div></div>
-      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52742" target="_blank">🔗 Jira Ticket — ONA-52742</a><a class="modal-link" href="https://github.dev.global.tesco.org/MobileApps/android-titan/pull/15822" target="_blank">🔗 PR #15822 — android-titan</a><a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/352425764/Product+Warnings+Safety+Info+Flow" target="_blank">🔗 Confluence: Product Warnings & Safety Info Flow</a></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div>
+        <a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-52742" target="_blank">🔗 Jira Ticket — ONA-52742</a>
+        <a class="modal-link" href="https://github.dev.global.tesco.org/MobileApps/android-titan/pull/15822" target="_blank">🔗 PR #15822 — android-titan</a>
+        <a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/352425764/Product+Warnings+Safety+Info+Flow" target="_blank">🔗 Confluence: Product Warnings &amp; Safety Info Flow</a>
+      </div>
     </div>
   </div>
 </div>
@@ -704,40 +789,139 @@
       <div class="modal-section"><div class="modal-section-title">Feature Overview</div><p>Implemented a new Product Dimensions section on the PDP, surfacing dimension data from the updated Mango API contract to help customers make better-informed buying decisions.</p></div>
       <div class="modal-section"><div class="modal-section-title">What I Did</div><ul><li>Worked with the Mango team to understand and implement the updated API contract</li><li>Delivered the feature end-to-end — from API data layer through ViewModel to UI</li><li>Raised Mango PR for contract changes</li><li>Documented the full feature and data flow in Confluence</li></ul></div>
       <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Feature Ownership</span><span class="tag">API Contract Changes</span><span class="tag">Mango Integration</span><span class="tag">Confluence Docs</span><span class="tag">PDP</span></div></div>
-      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-53133" target="_blank">🔗 Jira Ticket — ONA-53133</a><a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/348433453/Product+Dimensions+Feature" target="_blank">🔗 Confluence: Product Dimensions Feature</a></div>
+      <div class="modal-section"><div class="modal-section-title">Links</div>
+        <a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-53133" target="_blank">🔗 Jira Ticket — ONA-53133</a>
+        <a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/348433453/Product+Dimensions+Feature" target="_blank">🔗 Confluence: Product Dimensions Feature</a>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- ===== SECURITY MODAL 1: MEDIA-5010 ===== -->
 <div class="modal-overlay" id="m8" onclick="closeModalOutside(event,'m8')">
   <div class="modal">
-    <div class="modal-header"><button class="modal-close" onclick="closeModal('m8')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">MEDIA-5010 · Done ✓</span></div><h2>Security Squad — MEDIA-5010</h2><p>Cross-squad security contribution</p></div>
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('m8')">✕</button>
+      <div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">MEDIA-5010 · Done ✓</span></div>
+      <h2>POC — Hardening API Keys Using Native .so Files (NDK)</h2>
+      <p>Created a Proof of Concept to evaluate using Android NDK .so files to protect API key storage in APK/AAB builds</p>
+    </div>
     <div class="modal-body">
-      <div class="modal-section"><div class="modal-section-title">Contribution</div><p>Contributed to the Security Squad as part of cross-squad collaboration. Supported investigation and analysis on this media-related security ticket.</p></div>
-      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Cross-squad Collaboration</span><span class="tag">Security Mindset</span><span class="tag">Media Handling</span></div></div>
-      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/MEDIA-5010" target="_blank">🔗 Jira Ticket — MEDIA-5010</a></div>
+      <div class="modal-section">
+        <div class="modal-section-title">The Problem</div>
+        <p>API keys stored in Kotlin/Java code are easily exposed when an APK is decompiled. The Security Squad needed to evaluate whether moving secrets into native <code>.so</code> files (via NDK) would meaningfully improve resistance to reverse engineering.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">What I Built</div>
+        <ul>
+          <li>Created a standalone Android POC app/module using Android NDK</li>
+          <li>Stored a sample API key <strong>only in native code</strong> — not in any Kotlin/Java file</li>
+          <li>Exposed the key to Kotlin via <strong>JNI (Java Native Interface)</strong></li>
+          <li>Verified the key is accessible at runtime and not visible in decompiled Kotlin/Java</li>
+          <li>Tested behaviour in both debug and release builds</li>
+          <li>Decompiled the APK/AAB to analyse key visibility after native obfuscation</li>
+        </ul>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Findings & Recommendation</div>
+        <ul>
+          <li><strong>Security benefit:</strong> Key is not directly visible in decompiled Kotlin/Java — a meaningful improvement over plain Kotlin storage</li>
+          <li><strong>Limitation:</strong> Native code can still be reverse engineered using tools like <code>Ghidra</code> or <code>IDA Pro</code>, so it's not foolproof</li>
+          <li><strong>Recommendation:</strong> NDK approach is worth pursuing as one layer of defence, especially when combined with encryption of the key itself</li>
+          <li>Full findings, comparison table, and next steps documented on Confluence</li>
+        </ul>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Skills Demonstrated</div>
+        <div class="tag-row"><span class="tag">Android NDK</span><span class="tag">JNI</span><span class="tag">APK Reverse Engineering</span><span class="tag">Security Hardening</span><span class="tag">POC Delivery</span><span class="tag">Confluence Docs</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Links</div>
+        <a class="modal-link" href="https://tesco.atlassian.net/browse/MEDIA-5010" target="_blank">🔗 Jira Ticket — MEDIA-5010</a>
+        <a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/313883333/Proof+of+Concept+POC+Storing+Sensitive+Data+Using+Android+NDK+Jetpack+Compose" target="_blank">🔗 Confluence: POC — Storing Sensitive Data Using Android NDK</a>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- ===== SECURITY MODAL 2: ONA-45583 ===== -->
 <div class="modal-overlay" id="m9" onclick="closeModalOutside(event,'m9')">
   <div class="modal">
-    <div class="modal-header"><button class="modal-close" onclick="closeModal('m9')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">ONA-45583 · Done ✓</span></div><h2>Security Squad — ONA-45583</h2><p>Cross-squad security contribution</p></div>
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('m9')">✕</button>
+      <div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">ONA-45583 · Done ✓</span></div>
+      <h2>[Encryption] Best Practices for Storing Keys in Mobile Apps</h2>
+      <p>Researched and documented best practices for securely storing keys and sensitive data in Android applications</p>
+    </div>
     <div class="modal-body">
-      <div class="modal-section"><div class="modal-section-title">Contribution</div><p>Supported the Security Squad on this authentication-related ticket — directly complementing the JWT auth work I built in my MVP2 project.</p></div>
-      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Authentication Flows</span><span class="tag">JWT Handling</span><span class="tag">Security Best Practices</span><span class="tag">Cross-squad</span></div></div>
-      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-45583" target="_blank">🔗 Jira Ticket — ONA-45583</a></div>
+      <div class="modal-section">
+        <div class="modal-section-title">Purpose</div>
+        <p>As part of the Security Squad's initiative to improve key management across the Tesco app, I was tasked with studying and documenting the current best practices for storing sensitive keys and data in mobile apps — to inform the team's approach going forward.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">What I Researched & Documented</div>
+        <ul>
+          <li><strong>EncryptedSharedPreferences</strong> — Jetpack Security library for encrypting key-value stores on device</li>
+          <li><strong>Android Keystore System</strong> — hardware-backed key storage; keys never leave the secure enclave</li>
+          <li><strong>NDK / .so files</strong> — moving secrets to native code to reduce visibility in decompiled Java/Kotlin</li>
+          <li><strong>Hardcoded keys in source</strong> — documented why this is the worst approach and should be avoided</li>
+          <li>Comparison of all approaches: ease of implementation, security level, and attack surface</li>
+          <li>Clear recommendation on which approach to use for which type of secret</li>
+        </ul>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Impact</div>
+        <p>This research directly fed into ONA-53986, where I began implementing the NDK approach for the New Relic key in the Titan project. The Confluence document serves as the team's reference guide for key storage decisions.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Skills Demonstrated</div>
+        <div class="tag-row"><span class="tag">Encryption</span><span class="tag">Android Keystore</span><span class="tag">EncryptedSharedPreferences</span><span class="tag">Security Research</span><span class="tag">Technical Writing</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Links</div>
+        <a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-45583" target="_blank">🔗 Jira Ticket — ONA-45583</a>
+        <a class="modal-link" href="https://tesco.atlassian.net/wiki/spaces/ONT/pages/291702029/Best+practices+to+store+keys+and+information+in+mobile+apps" target="_blank">🔗 Confluence: Best Practices for Storing Keys in Mobile Apps</a>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- ===== SECURITY MODAL 3: ONA-53986 ===== -->
 <div class="modal-overlay" id="m10" onclick="closeModalOutside(event,'m10')">
   <div class="modal">
-    <div class="modal-header"><button class="modal-close" onclick="closeModal('m10')">✕</button><div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">ONA-53986 · Done ✓</span></div><h2>Security Squad — ONA-53986</h2><p>Cross-squad security contribution</p></div>
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('m10')">✕</button>
+      <div class="modal-header-meta"><span class="ticket-badge badge-security">Security</span><span style="color:#6b7280;font-size:0.85rem;">ONA-53986 · In Progress 🔵</span></div>
+      <h2>[Android] Introduce .so File with 1 Key in Titan for Key Security</h2>
+      <p>Applying the NDK approach in production — storing the New Relic key of the android-titan project in a native .so file</p>
+    </div>
     <div class="modal-body">
-      <div class="modal-section"><div class="modal-section-title">Contribution</div><p>Assisted the Security Squad on a session management issue — ensuring auth tokens are properly invalidated on logout. Directly relates to the session management work I implemented in MVP2.</p></div>
-      <div class="modal-section"><div class="modal-section-title">Skills Demonstrated</div><div class="tag-row"><span class="tag">Session Management</span><span class="tag">Token Lifecycle</span><span class="tag">Secure Logout</span><span class="tag">Cross-squad</span></div></div>
-      <div class="modal-section"><div class="modal-section-title">Links</div><a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-53986" target="_blank">🔗 Jira Ticket — ONA-53986</a></div>
+      <div class="modal-section">
+        <div class="modal-section-title">What I'm Doing</div>
+        <p>Taking the learnings from the MEDIA-5010 POC and applying them directly to the production <strong>android-titan</strong> codebase. The first key being hardened is the <strong>New Relic API key</strong> — moving it from plain Kotlin into a native <code>.so</code> file to protect it from APK decompilation.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Technical Approach</div>
+        <ul>
+          <li>Introducing a <code>.so</code> file in the Titan project via Android NDK</li>
+          <li>New Relic key stored only in native C/C++ — not visible in Kotlin/Java decompilation</li>
+          <li>Kotlin accesses the key at runtime via JNI bridge</li>
+          <li>Exploring <strong>XXTea encryption algorithm</strong> to add a second layer — encrypting the key itself within the native code, so even native reverse engineering reveals only ciphertext</li>
+          <li>Investigating secure storage of the XXTea encryption/decryption key to avoid creating a new single point of failure</li>
+        </ul>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Why This Matters</div>
+        <p>This is real security work in a production codebase used by millions. Moving a key from plaintext Kotlin to encrypted native storage meaningfully raises the bar for attackers. The XXTea exploration shows I'm thinking beyond surface-level obfuscation to actual layered defence.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Skills Demonstrated</div>
+        <div class="tag-row"><span class="tag">Android NDK</span><span class="tag">JNI</span><span class="tag">XXTea Encryption</span><span class="tag">Production Security</span><span class="tag">Key Hardening</span><span class="tag">Layered Defence</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Links</div>
+        <a class="modal-link" href="https://tesco.atlassian.net/browse/ONA-53986" target="_blank">🔗 Jira Ticket — ONA-53986</a>
+      </div>
     </div>
   </div>
 </div>
